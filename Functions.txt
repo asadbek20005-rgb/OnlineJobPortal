@@ -1,0 +1,23 @@
+1. Get vacansies by cities
+2. Sending messages for help in Telegram
+3. Creating new Resume
+4. Sign up
+5. Sign in
+6. Get all vacansies by profession,  position, and company
+7. Get all my Resumes
+8. Get Profile
+9. Update Profile
+10. Changing visibality of Resume
+11. Edit Resume
+12. Delete Resume
+13. Marking search status
+14. Get all professions by letters
+15. Get all chats
+16. Get all vacansies by resume
+17. Dowload and delete Resume
+18. Add vacansy to favorites
+19. Reply to vacansy
+20. Hide vacansy
+22. Upload image
+23. Get all my hidden vacansies
+

@@ -1,0 +1,36 @@
+User:
+1. Phone number
+2. Password
+3. Full name
+4. Email
+5. Status
+6. Language
+7. City
+
+
+Resume:
+1. Profession
+2. IncomeLevelPerMonth
+3. Specializations
+4. WorkingHours
+5. TypeOfEmployment
+6. Contacts
+7. Experience
+8. PlaceOfWork
+9. Skills
+10. Education
+11. Languages
+12. AboutMe
+
+
+Vacansy:
+1. Profession
+2. Payments
+3. work experience
+4. Schedule
+5. Working hours
+6. Work Format
+9. Details
+10. Key skills
+11. Contacts
+12. Company
