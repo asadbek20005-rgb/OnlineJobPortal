@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="14.0.0" />
+        <PackageReference Include="GenericServices.StatusGeneric" Version="1.2.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.15" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.3.0" />
+        <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.4" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageReference Include="StackExchange.Redis" Version="2.8.37" />
+    </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\OnlineJobPortal.Common\OnlineJobPortal.Common.csproj" />
+    <ProjectReference Include="..\OnlineJobPortal.Data\OnlineJobPortal.Data.csproj" />
+  </ItemGroup>
+
+</Project>

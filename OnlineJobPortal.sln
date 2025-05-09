@@ -15,9 +15,47 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		postgres.yaml = postgres.yaml
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8EBA53F2-5984-4340-930C-90F3E43DA2E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineJobPortal.Data", "OnlineJobPortal.Data\OnlineJobPortal.Data.csproj", "{FDDC3084-07BA-4D37-8F89-AA78F57262C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineJobPortal.Api", "OnlineJobPortal.Api\OnlineJobPortal.Api.csproj", "{C5F0918B-5F11-4D17-8418-3C7D61DEB19B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineJobPortal.Common", "OnlineJobPortal.Common\OnlineJobPortal.Common.csproj", "{11425033-2261-45DF-854C-B5F28656F26D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineJobPortal.Service", "OnlineJobPortal.Service\OnlineJobPortal.Service.csproj", "{F79BAB53-2990-4A41-B526-E109A37AADE5}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FDDC3084-07BA-4D37-8F89-AA78F57262C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDDC3084-07BA-4D37-8F89-AA78F57262C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDDC3084-07BA-4D37-8F89-AA78F57262C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDDC3084-07BA-4D37-8F89-AA78F57262C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C5F0918B-5F11-4D17-8418-3C7D61DEB19B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5F0918B-5F11-4D17-8418-3C7D61DEB19B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5F0918B-5F11-4D17-8418-3C7D61DEB19B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5F0918B-5F11-4D17-8418-3C7D61DEB19B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11425033-2261-45DF-854C-B5F28656F26D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11425033-2261-45DF-854C-B5F28656F26D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11425033-2261-45DF-854C-B5F28656F26D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11425033-2261-45DF-854C-B5F28656F26D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F79BAB53-2990-4A41-B526-E109A37AADE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F79BAB53-2990-4A41-B526-E109A37AADE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F79BAB53-2990-4A41-B526-E109A37AADE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F79BAB53-2990-4A41-B526-E109A37AADE5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{FDDC3084-07BA-4D37-8F89-AA78F57262C8} = {8EBA53F2-5984-4340-930C-90F3E43DA2E5}
+		{C5F0918B-5F11-4D17-8418-3C7D61DEB19B} = {8EBA53F2-5984-4340-930C-90F3E43DA2E5}
+		{11425033-2261-45DF-854C-B5F28656F26D} = {8EBA53F2-5984-4340-930C-90F3E43DA2E5}
+		{F79BAB53-2990-4A41-B526-E109A37AADE5} = {8EBA53F2-5984-4340-930C-90F3E43DA2E5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F3D97427-B116-419A-97BE-6C375CECA2E5}
