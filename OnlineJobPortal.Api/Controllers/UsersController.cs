@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using OnlineJobPortal.Common.Dtos;
 using OnlineJobPortal.Common.Models.Otp;
 using OnlineJobPortal.Common.Models.User;
 using OnlineJobPortal.Service.Contracts;
@@ -58,6 +59,32 @@ public class UsersController(IUserService userService) : ControllerBase
         if (_userService.IsValid)
         {
             return Ok(token);
+        }
+
+        _userService.CopyToModelState(ModelState);
+        return BadRequest(ModelState);
+    }
+
+    [HttpGet("profile")]
+    public async Task<IActionResult> GetProfile(Guid userId)
+    {
+        UserDto? user = await _userService.GetProfileAsync(userId);
+        if (_userService.IsValid)
+        {
+            return Ok(user);
+        }
+
+        _userService.CopyToModelState(ModelState);
+        return BadRequest(ModelState);
+    }
+
+    [HttpPut("profile")]
+    public async Task<IActionResult> UpdateProfile(Guid userId, UpdateUserBasicDetailModel model)
+    {
+        await _userService.EditProfileAsync(userId, model);
+        if (_userService.IsValid)
+        {
+            return Ok("Done");
         }
 
         _userService.CopyToModelState(ModelState);

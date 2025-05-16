@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OnlineJobPortal.Data.Entities;
-[Table("users", Schema ="application")]
+[Table("users", Schema = "application")]
 public class User : Date
 {
     [Key]
@@ -38,7 +38,6 @@ public class User : Date
     public Status? Status { get; set; }
 
 
-
     [Column("city_id")]
     public int? CityId { get; set; }
 
@@ -52,6 +51,20 @@ public class User : Date
 
     [ForeignKey(nameof(RoleId))]
     public Role? Role { get; set; }
+
+    [Column("language_id")]
+    [Required]
+    public int LanguageId { get; set; }
+
+    [ForeignKey(nameof(LanguageId))]
+    public Language? Language { get; set; }
+
+    [Column("language_level_id")]
+    [Required]
+    public int LevelId { get; set; }
+
+    [ForeignKey(nameof(LevelId))]
+    public Level? Level { get; set; }
 
     public ICollection<Resume>? Resumes { get; set; }
 

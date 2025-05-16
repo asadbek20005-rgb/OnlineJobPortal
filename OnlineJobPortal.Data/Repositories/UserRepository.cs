@@ -7,8 +7,7 @@ public class UserRepository(OnlineJobPortalDbContext context) : BaseRepository<U
 {
     public override Task AddAsync(User entity)
     {
-        entity.RoleId = 1;
-        entity.StatusId = 1;
+        
         return base.AddAsync(entity);
     }
 }

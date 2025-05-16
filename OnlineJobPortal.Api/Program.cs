@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using OnlineJobPortal.Api.CustomMiddlewares;
@@ -8,6 +9,7 @@ using OnlineJobPortal.Data.Repositories;
 using OnlineJobPortal.Service.Contracts;
 using OnlineJobPortal.Service.Mappers;
 using OnlineJobPortal.Service.Services;
+using OnlineJobPortal.Service.Validators;
 using Serilog;
 using StackExchange.Redis;
 
@@ -24,6 +26,21 @@ builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRedisService, RedisService>();
 builder.Services.AddScoped<IOtpService, OtpService>();
+builder.Services.AddScoped<IResumeService, ResumeService>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateResumeValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateSkillValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateContactValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateEducationValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateUserBasicDetailValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateWokrExperianceValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateResumeValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateSkillValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateContactValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateEducationValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateUserBasicDetailValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<UpdateWorkExperianceValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<RegisterModelValidator>();
+
 builder.Services.AddDbContext<OnlineJobPortalDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));

@@ -24,7 +24,7 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
         }
         catch (Exception ex)
         {
-            if (ex.InnerException != null)
+            if (ex.InnerException is not null)
             {
                 _logger.LogError(ex.InnerException.GetType().ToString(), ex.InnerException.Message);
             }
@@ -33,7 +33,7 @@ public class ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddlewa
                 _logger.LogError(ex.GetType().ToString(), ex.Message);
             }
 
-            await httpContext.Response.WriteAsync("Error occured");
+            await httpContext.Response.WriteAsync($"Error: {ex.Message}");
         }
     }
 

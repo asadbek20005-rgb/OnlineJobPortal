@@ -19,5 +19,4 @@ public class CreateUserBasicDetailModel
 
     [Required]
     public int StatusId { get; set; }
-
 }

@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore.Storage;
 using OnlineJobPortal.Data.Contexts;
 using OnlineJobPortal.Data.Contracts;
 
@@ -12,6 +13,8 @@ public class BaseRepository<TEntity>(OnlineJobPortalDbContext onlineJobPortalDbC
         await _context.Set<TEntity>().AddAsync(entity);
     }
 
+    public async Task<IDbContextTransaction> BeginTransactionAsync() => await _context.Database.BeginTransactionAsync();
+    public async Task CommitTransactionAsync() => await _context.Database.CommitTransactionAsync();
     public Task DeleteAsync(TEntity entity)
     {
         _context.Set<TEntity>().Remove(entity);
@@ -28,10 +31,7 @@ public class BaseRepository<TEntity>(OnlineJobPortalDbContext onlineJobPortalDbC
         return await _context.Set<TEntity>().FindAsync(id);
     }
 
-    public async Task SaveChangesAsync()
-    {
-        await _context.SaveChangesAsync();
-    }
+    public async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
     public Task UpdateAsync(TEntity entity)
     {

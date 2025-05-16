@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-
 namespace OnlineJobPortal.Common.Models.Education;
 
 public class CreateEducationModel
@@ -11,7 +10,6 @@ public class CreateEducationModel
     [StringLength(255)]
     [Required]
     public string Faculty { get; set; } = string.Empty;
-
 
     [DataType(DataType.Date)]
     [Required]

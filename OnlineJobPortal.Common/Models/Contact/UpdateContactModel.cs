@@ -3,22 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OnlineJobPortal.Common.Models.Contact;
 
-public class CreateContactModel
+public class UpdateContactModel
 {
-    [StringLength(15)]
-    [Required]
-    [Phone]
     [PhoneNumber(ErrorMessage = "Phone number must be UZB format")]
-    public string PhoneNumber { get; set; } = string.Empty;
-
-
-    [StringLength(255)]
-    [Required]
+    public string? PhoneNumber { get; set; } = string.Empty;
     [EmailAddress]
-    public string Email { get; set; } = string.Empty;
-
-
+    public string? Email { get; set; } = string.Empty;
     [DataType(DataType.MultilineText)]
+    [MinLength(10)]
     public string? Details { get; set; }
 }
-

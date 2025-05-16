@@ -1,13 +1,13 @@
+using OnlineJobPortal.Common.CustomAttributes;
 using System.ComponentModel.DataAnnotations;
 
 namespace OnlineJobPortal.Common.Models.User;
 
 public class RegisterModel
 {
-    
-
     [StringLength(15)]
     [Required]
+    [PhoneNumber(ErrorMessage ="Phone number must be UZB format")]
     public string PhoneNumber { get; set; } = string.Empty;
 
 
@@ -21,6 +21,6 @@ public class RegisterModel
     public string ConfirmPassword { get; set; } = string.Empty;
 
 
-    
-   
+
+
 }

@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace OnlineJobPortal.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class First : Migration
+    public partial class FIrst : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -28,7 +28,7 @@ namespace OnlineJobPortal.Data.Migrations
                     phone_number = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
                     email = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     details = table.Column<string>(type: "text", nullable: true),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
@@ -43,7 +43,7 @@ namespace OnlineJobPortal.Data.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     full_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     short_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -61,7 +61,7 @@ namespace OnlineJobPortal.Data.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     full_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     short_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -79,7 +79,7 @@ namespace OnlineJobPortal.Data.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     full_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     short_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -97,7 +97,7 @@ namespace OnlineJobPortal.Data.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     full_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     short_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -115,7 +115,7 @@ namespace OnlineJobPortal.Data.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     full_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     short_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -133,7 +133,7 @@ namespace OnlineJobPortal.Data.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     full_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     short_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -151,7 +151,7 @@ namespace OnlineJobPortal.Data.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     full_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     short_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -169,7 +169,7 @@ namespace OnlineJobPortal.Data.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     full_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     short_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -187,7 +187,7 @@ namespace OnlineJobPortal.Data.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     full_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     short_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -196,6 +196,24 @@ namespace OnlineJobPortal.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_info_working_hours", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "otps",
+                schema: "application",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    phone_number = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
+                    code = table.Column<int>(type: "integer", nullable: false),
+                    is_expired = table.Column<bool>(type: "boolean", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_otps", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -212,7 +230,7 @@ namespace OnlineJobPortal.Data.Migrations
                     getting_started = table.Column<DateOnly>(type: "date", nullable: false),
                     ending = table.Column<DateOnly>(type: "date", nullable: false),
                     responsibilities = table.Column<string>(type: "text", nullable: false),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
@@ -230,7 +248,7 @@ namespace OnlineJobPortal.Data.Migrations
                     name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     about = table.Column<string>(type: "text", nullable: false),
                     city_id = table.Column<int>(type: "integer", nullable: false),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
@@ -256,7 +274,7 @@ namespace OnlineJobPortal.Data.Migrations
                     faculty = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     graduation_year = table.Column<DateOnly>(type: "date", nullable: false),
                     level_id = table.Column<int>(type: "integer", nullable: false),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
@@ -278,8 +296,8 @@ namespace OnlineJobPortal.Data.Migrations
                 {
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    level_id = table.Column<int>(type: "integer", nullable: false),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    level_id = table.Column<int>(type: "integer", nullable: true),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     full_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     short_name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
@@ -293,8 +311,7 @@ namespace OnlineJobPortal.Data.Migrations
                         column: x => x.level_id,
                         principalSchema: "info",
                         principalTable: "info_levels",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -303,14 +320,16 @@ namespace OnlineJobPortal.Data.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    full_name = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
+                    full_name = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: true),
                     phone_number = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
                     password_hash = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     email = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
-                    status_id = table.Column<int>(type: "integer", nullable: false),
-                    city_id = table.Column<int>(type: "integer", nullable: false),
+                    status_id = table.Column<int>(type: "integer", nullable: true),
+                    city_id = table.Column<int>(type: "integer", nullable: true),
                     role_id = table.Column<int>(type: "integer", nullable: false),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    language_id = table.Column<int>(type: "integer", nullable: false),
+                    language_level_id = table.Column<int>(type: "integer", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
@@ -321,6 +340,19 @@ namespace OnlineJobPortal.Data.Migrations
                         column: x => x.city_id,
                         principalSchema: "info",
                         principalTable: "info_cities",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_users_info_languages_language_id",
+                        column: x => x.language_id,
+                        principalSchema: "info",
+                        principalTable: "info_languages",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_users_info_levels_language_level_id",
+                        column: x => x.language_level_id,
+                        principalSchema: "info",
+                        principalTable: "info_levels",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -335,8 +367,7 @@ namespace OnlineJobPortal.Data.Migrations
                         column: x => x.status_id,
                         principalSchema: "info",
                         principalTable: "info_statuses",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -348,7 +379,7 @@ namespace OnlineJobPortal.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     profession_id = table.Column<int>(type: "integer", nullable: false),
                     company_id = table.Column<int>(type: "integer", nullable: false),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
@@ -389,7 +420,9 @@ namespace OnlineJobPortal.Data.Migrations
                     income_level_per_month = table.Column<decimal>(type: "numeric", nullable: false),
                     specializations = table.Column<string>(type: "text", nullable: false),
                     about_me = table.Column<string>(type: "text", nullable: false),
-                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    is_hided = table.Column<bool>(type: "boolean", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
@@ -539,6 +572,18 @@ namespace OnlineJobPortal.Data.Migrations
                 column: "city_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_users_language_id",
+                schema: "application",
+                table: "users",
+                column: "language_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_users_language_level_id",
+                schema: "application",
+                table: "users",
+                column: "language_level_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_users_role_id",
                 schema: "application",
                 table: "users",
@@ -567,8 +612,8 @@ namespace OnlineJobPortal.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "info_languages",
-                schema: "info");
+                name: "otps",
+                schema: "application");
 
             migrationBuilder.DropTable(
                 name: "resumes",
@@ -616,6 +661,10 @@ namespace OnlineJobPortal.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "info_professions",
+                schema: "info");
+
+            migrationBuilder.DropTable(
+                name: "info_languages",
                 schema: "info");
 
             migrationBuilder.DropTable(

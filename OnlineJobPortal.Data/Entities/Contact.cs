@@ -26,6 +26,4 @@ public class Contact : Date
     [Column("details")]
     [DataType(DataType.MultilineText)]
     public string? Details { get; set; }
-
-
 }

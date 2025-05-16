@@ -433,6 +433,14 @@ namespace OnlineJobPortal.Data.Migrations
                         .HasColumnType("numeric")
                         .HasColumnName("income_level_per_month");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_deleted");
+
+                    b.Property<bool>("IsHided")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_hided");
+
                     b.Property<int>("ProfessionId")
                         .HasColumnType("integer")
                         .HasColumnName("profession_id");
@@ -690,6 +698,14 @@ namespace OnlineJobPortal.Data.Migrations
                         .HasColumnType("character varying(150)")
                         .HasColumnName("full_name");
 
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("integer")
+                        .HasColumnName("language_id");
+
+                    b.Property<int>("LevelId")
+                        .HasColumnType("integer")
+                        .HasColumnName("language_level_id");
+
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -717,6 +733,10 @@ namespace OnlineJobPortal.Data.Migrations
                     b.HasKey("id");
 
                     b.HasIndex("CityId");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("LevelId");
 
                     b.HasIndex("RoleId");
 
@@ -973,6 +993,18 @@ namespace OnlineJobPortal.Data.Migrations
                         .WithMany()
                         .HasForeignKey("CityId");
 
+                    b.HasOne("OnlineJobPortal.Data.Entities.Language", "Language")
+                        .WithMany()
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineJobPortal.Data.Entities.Level", "Level")
+                        .WithMany()
+                        .HasForeignKey("LevelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("OnlineJobPortal.Data.Entities.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
@@ -984,6 +1016,10 @@ namespace OnlineJobPortal.Data.Migrations
                         .HasForeignKey("StatusId");
 
                     b.Navigation("City");
+
+                    b.Navigation("Language");
+
+                    b.Navigation("Level");
 
                     b.Navigation("Role");
 

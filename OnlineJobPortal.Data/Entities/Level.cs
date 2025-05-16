@@ -5,4 +5,5 @@ namespace OnlineJobPortal.Data.Entities;
 [Table("info_levels", Schema = "info")]
 public class Level : BaseEntity
 {
+
 }

@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore;
+
 namespace OnlineJobPortal.Data.Contracts;
 
 public interface IBaseRepository<TEntity> where TEntity : class
@@ -8,6 +11,9 @@ public interface IBaseRepository<TEntity> where TEntity : class
     Task UpdateAsync(TEntity entity);
     Task DeleteAsync(TEntity entity);
     Task SaveChangesAsync();
+    public Task<IDbContextTransaction> BeginTransactionAsync();
+    public Task CommitTransactionAsync();
+
 
 }
 

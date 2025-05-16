@@ -1,13 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineJobPortal.Data.Bases;
 using OnlineJobPortal.Data.Entities;
-using System.Security.Cryptography.X509Certificates;
 
 namespace OnlineJobPortal.Data.Contexts;
 
 public class OnlineJobPortalDbContext : DbContext
 {
-    public OnlineJobPortalDbContext(DbContextOptions<OnlineJobPortalDbContext> contextOptions) :base(contextOptions)
+    public OnlineJobPortalDbContext(DbContextOptions<OnlineJobPortalDbContext> contextOptions) : base(contextOptions)
     {
 
     }
@@ -46,6 +45,10 @@ public class OnlineJobPortalDbContext : DbContext
                     .HasDefaultValueSql("CURRENT_TIMESTAMP");
             }
         }
+
+
+        modelBuilder.Entity<Resume>()
+            .HasQueryFilter(resume => !resume.IsDeleted && !resume.IsHided);
     }
 
 

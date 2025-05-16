@@ -5,5 +5,5 @@ namespace OnlineJobPortal.Data.Entities;
 [Table("info_languages", Schema = "info")]
 public class Language : BaseEntity
 {
-
+   
 }

@@ -38,7 +38,7 @@ public class Resume : Date
 
     [Column("type_of_employment_id")]
     [Required]
-    public int TypeOfEmploymentId { get; set; } 
+    public int TypeOfEmploymentId { get; set; }
 
     [ForeignKey(nameof(TypeOfEmploymentId))]
     public TypeOfEmployment? TypeOfEmployment { get; set; } = null!;
@@ -99,5 +99,14 @@ public class Resume : Date
     [DataType(DataType.MultilineText)]
     [Required]
     public string AboutMe { get; set; } = string.Empty;
+
+
+
+    [Column("is_deleted")]
+    public bool IsDeleted { get; set; } = false;
+
+
+    [Column("is_hided")]
+    public bool IsHided { get; set; } = false;
 
 }

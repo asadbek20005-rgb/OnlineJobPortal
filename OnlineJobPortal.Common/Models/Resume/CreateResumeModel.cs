@@ -17,10 +17,10 @@ public class CreateResumeModel
     public int ProfessionId { get; set; }
 
 
-    [Required]
+    [Required(ErrorMessage = "Please enter income level per month")]
     public decimal IncomeLevelPerMonth { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "Please enter currency id")]
     public int CurrencyId { get; set; }
 
     [DataType(DataType.MultilineText)]
@@ -29,11 +29,11 @@ public class CreateResumeModel
 
 
     [Required]
-    public CreateEducationModel Education { get; set; }
+    public CreateEducationModel CreateEducationModel { get; set; }
 
 
     [Required]
-    public CreatSkillModel CreatSkill { get; set; }
+    public CreatSkillModel CreatSkillModel { get; set; }
 
 
     [Required]
