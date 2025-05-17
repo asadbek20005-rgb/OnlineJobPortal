@@ -1,8 +1,10 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using OnlineJobPortal.Api.CustomMiddlewares;
 using OnlineJobPortal.Api.CustomMiddlewares.Extensions;
+using OnlineJobPortal.Common.Models.Minio;
 using OnlineJobPortal.Data.Contexts;
 using OnlineJobPortal.Data.Contracts;
 using OnlineJobPortal.Data.Repositories;
@@ -27,6 +29,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRedisService, RedisService>();
 builder.Services.AddScoped<IOtpService, OtpService>();
 builder.Services.AddScoped<IResumeService, ResumeService>();
+builder.Services.AddScoped<IContentService, ContentService>();
+builder.Services.AddSingleton<IMinioService, MinioService>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateResumeValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateSkillValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateContactValidator>();
@@ -63,6 +67,18 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 
     };
 });
+
+builder.Services.Configure<MinioSettings>(builder.Configuration.GetSection("MinIO"));
+builder.Services.AddSingleton(sp =>
+sp.GetRequiredService<IOptions<MinioSettings>>().Value);
+
+//builder.Services.AddScoped(serviceProvider =>
+//{
+//    var minIOSettings = builder.Configuration.GetSection("MinIO").Get<MinioSettings>();
+//    if (minIOSettings is null)
+//        throw new Exception("Model is null");
+//    return new MinioService(minIOSettings);
+//});
 
 var app = builder.Build();
 

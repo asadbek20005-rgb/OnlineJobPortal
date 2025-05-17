@@ -12,5 +12,5 @@ public interface IResumeService : IStatusGeneric
     Task<List<ResumeDto>> GetAllResumesAsync();
     Task<List<ResumeDto>> GetAllUserResumes(Guid userId);
     Task<ResumeDto?> GetUserResumeByIdAsync(Guid userId, int resumeId);
-    Task EditAsync(Guid userId, int resumeId, UpdateResumeModel model);
+    Task EditAsync(Guid userId, int resumeId, UpdateResumeModel model); 
 }

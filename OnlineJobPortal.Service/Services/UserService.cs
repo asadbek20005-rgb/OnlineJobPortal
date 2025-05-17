@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using OnlineJobPortal.Common.Dtos;
 using OnlineJobPortal.Common.Models.Otp;
 using OnlineJobPortal.Common.Models.User;
+using OnlineJobPortal.Common.Results;
 using OnlineJobPortal.Common.Statics;
 using OnlineJobPortal.Data.Contracts;
 using OnlineJobPortal.Data.Entities;
@@ -55,14 +56,13 @@ public class UserService(IBaseRepository<User> userRepository, IMapper mapper,
 
         await _redisService.SetItemAsync(StaticData.UserRedisKey, newUser);
         int code = await _otpService.GenerateCodeToPhoneNumberAsync(model.PhoneNumber);
+
+        await _otpService.SendSMSAsync(model.PhoneNumber, $"Varification code: {code}");
+
         return code;
     }
-
-
-
     public async Task VerifyRegisterAsync(OtpModel model)
     {
-        // Reconstruction
 
         var validationResult = await _otpValidator.ValidateAsync(model);
         if (!validationResult.IsValid)
@@ -92,8 +92,6 @@ public class UserService(IBaseRepository<User> userRepository, IMapper mapper,
         await _userRepository.AddAsync(user);
         await _userRepository.SaveChangesAsync();
     }
-
-
     public async Task<int?> LoginAysnc(LoginModel model)
     {
         User? user = await (await _userRepository.GetAllAsync())
@@ -115,8 +113,6 @@ public class UserService(IBaseRepository<User> userRepository, IMapper mapper,
         int code = await _otpService.GenerateCodeToPhoneNumberAsync(model.PhoneNumber);
         return code;
     }
-
-
     public async Task<string> VerifyLoginAsync(OtpModel model)
     {
         await _otpService.VerifyAsync(model);
@@ -131,9 +127,7 @@ public class UserService(IBaseRepository<User> userRepository, IMapper mapper,
         return "token";
 
     }
-
-
-    public async Task<UserDto?> GetProfileAsync(Guid userId)
+    public async Task<Result<UserDto>> GetProfileAsync(Guid userId)
     {
         User? user = await (await _userRepository.GetAllAsync())
             .Where(user => user.id == userId)
@@ -141,10 +135,10 @@ public class UserService(IBaseRepository<User> userRepository, IMapper mapper,
 
         if (user is null)
         {
-            AddError("No such profile");
-            return null;
+            return Result<UserDto>.Failure("User Not Found");
         }
-        return _mapper.Map<UserDto>(user);
+        UserDto userDto = _mapper.Map<UserDto>(user);
+        return Result<UserDto>.Success(userDto);
     }
 
     public async Task EditProfileAsync(Guid userId, UpdateUserBasicDetailModel model)
@@ -170,6 +164,46 @@ public class UserService(IBaseRepository<User> userRepository, IMapper mapper,
         await _userRepository.UpdateAsync(updatedUser);
         await _userRepository.SaveChangesAsync();
     }
+    public async Task EditPhoneNumberAsync(Guid userId, UpdatePhoneNumberModel model)
+    {
+        User? user = await _userRepository.GetByIdAsync(userId);
+        if (user is null)
+        {
+            AddError("User not found");
+            return;
+        }
+
+        if (user.PhoneNumber == model.NewPhoneNumber)
+        {
+            AddError("Enter new phoneNumber");
+            return;
+        }
+
+        bool varificationPasswordResult = VerifyPassword(user, model.CurrentPassword);
+        if (varificationPasswordResult is false)
+        {
+            AddError("Enter current password");
+            return;
+        }
+
+        bool phoneNumberIsUsed = await (await _userRepository.GetAllAsync())
+            .AsNoTracking()
+            .AnyAsync(x => x.PhoneNumber == model.NewPhoneNumber);
+
+        if (phoneNumberIsUsed)
+        {
+            AddError("Enter another phone number");
+            return;
+        }
+
+        user.PhoneNumber = model.NewPhoneNumber;
+
+        await _userRepository.UpdateAsync(user);
+        await _userRepository.SaveChangesAsync();
+    }
+
+
+
 
 
 
@@ -207,8 +241,6 @@ public class UserService(IBaseRepository<User> userRepository, IMapper mapper,
         var hashedPassword = new PasswordHasher<User>().HashPassword(user, password);
         return hashedPassword;
     }
-
-
 
 
 

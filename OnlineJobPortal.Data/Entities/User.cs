@@ -67,5 +67,5 @@ public class User : Date
     public Level? Level { get; set; }
 
     public ICollection<Resume>? Resumes { get; set; }
-
+    public ICollection<Content>? Contents { get; set; }
 }

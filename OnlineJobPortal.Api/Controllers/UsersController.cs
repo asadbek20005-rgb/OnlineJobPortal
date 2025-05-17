@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using OnlineJobPortal.Common.Dtos;
 using OnlineJobPortal.Common.Models.Otp;
 using OnlineJobPortal.Common.Models.User;
+using OnlineJobPortal.Common.Results;
 using OnlineJobPortal.Service.Contracts;
 using OnlineJobPortal.Service.Extensions;
 
@@ -68,8 +69,8 @@ public class UsersController(IUserService userService) : ControllerBase
     [HttpGet("profile")]
     public async Task<IActionResult> GetProfile(Guid userId)
     {
-        UserDto? user = await _userService.GetProfileAsync(userId);
-        if (_userService.IsValid)
+        Result<UserDto> user = await _userService.GetProfileAsync(userId);
+        if (_userService.IsValid && user.IsSuccess)
         {
             return Ok(user);
         }
@@ -87,6 +88,17 @@ public class UsersController(IUserService userService) : ControllerBase
             return Ok("Done");
         }
 
+        _userService.CopyToModelState(ModelState);
+        return BadRequest(ModelState);
+    }
+
+
+    [HttpPatch("profile/phone-number")]
+    public async Task<IActionResult> UpdatePhoneNumber(Guid userId, UpdatePhoneNumberModel model)
+    {
+        await _userService.EditPhoneNumberAsync(userId, model);
+        if (_userService.IsValid)
+            return Ok("Done");
         _userService.CopyToModelState(ModelState);
         return BadRequest(ModelState);
     }
