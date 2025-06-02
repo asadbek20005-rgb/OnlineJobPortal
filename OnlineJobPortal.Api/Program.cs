@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using OnlineJobPortal.Api.CustomMiddlewares;
 using OnlineJobPortal.Api.CustomMiddlewares.Extensions;
+using OnlineJobPortal.Api.MinimalApies;
 using OnlineJobPortal.Common.Models.Minio;
 using OnlineJobPortal.Data.Contexts;
 using OnlineJobPortal.Data.Contracts;
@@ -14,6 +15,7 @@ using OnlineJobPortal.Service.Services;
 using OnlineJobPortal.Service.Validators;
 using Serilog;
 using StackExchange.Redis;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +32,7 @@ builder.Services.AddScoped<IRedisService, RedisService>();
 builder.Services.AddScoped<IOtpService, OtpService>();
 builder.Services.AddScoped<IResumeService, ResumeService>();
 builder.Services.AddScoped<IContentService, ContentService>();
+builder.Services.AddScoped<IVacancyService, VacancyService>();  
 builder.Services.AddSingleton<IMinioService, MinioService>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateResumeValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateSkillValidator>();
@@ -68,6 +71,11 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+});
+
 builder.Services.Configure<MinioSettings>(builder.Configuration.GetSection("MinIO"));
 builder.Services.AddSingleton(sp =>
 sp.GetRequiredService<IOptions<MinioSettings>>().Value);
@@ -99,5 +107,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.CreateVacancy();
+app.GetAll();   
 app.Run();

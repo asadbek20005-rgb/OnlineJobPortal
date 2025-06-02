@@ -7,7 +7,7 @@ public class RegisterModel
 {
     [StringLength(15)]
     [Required]
-    [PhoneNumber(ErrorMessage ="Phone number must be UZB format")]
+    [PhoneNumber(ErrorMessage = "Phone number must be UZB format")]
     public string PhoneNumber { get; set; } = string.Empty;
 
 

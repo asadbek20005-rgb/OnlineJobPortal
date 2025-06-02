@@ -102,4 +102,14 @@ public class UsersController(IUserService userService) : ControllerBase
         _userService.CopyToModelState(ModelState);
         return BadRequest(ModelState);
     }
+
+    [HttpGet]
+    public IActionResult GetAllUsers()
+    {
+        var users = _userService.GetAllUsers();
+        if (_userService.IsValid)
+            return Ok(users);
+        _userService.CopyToModelState(ModelState);
+        return BadRequest(ModelState);
+    }
 }

@@ -52,7 +52,7 @@ public class UserService(IBaseRepository<User> userRepository, IMapper mapper,
 
         var newUser = _mapper.Map<User>(model);
         newUser.PasswordHash = HashPassword(newUser, model.Password);
-        newUser.RoleId = 1;
+        newUser.RoleId = 2;
 
         await _redisService.SetItemAsync(StaticData.UserRedisKey, newUser);
         int code = await _otpService.GenerateCodeToPhoneNumberAsync(model.PhoneNumber);
@@ -135,7 +135,7 @@ public class UserService(IBaseRepository<User> userRepository, IMapper mapper,
 
         if (user is null)
         {
-            return Result<UserDto>.Failure("User Not Found");
+            return Result<UserDto>.BadRequest("User Not Found");
         }
         UserDto userDto = _mapper.Map<UserDto>(user);
         return Result<UserDto>.Success(userDto);
@@ -201,7 +201,10 @@ public class UserService(IBaseRepository<User> userRepository, IMapper mapper,
         await _userRepository.UpdateAsync(user);
         await _userRepository.SaveChangesAsync();
     }
-
+    public Task GetAllUsers()
+    {
+        return _userRepository.GetAllAsync();
+    }
 
 
 

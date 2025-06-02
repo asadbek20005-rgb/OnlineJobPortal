@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 using OnlineJobPortal.Service.Exceptions;
-using Serilog;
+using   Serilog;
 
 namespace OnlineJobPortal.Api.CustomMiddlewares;
 

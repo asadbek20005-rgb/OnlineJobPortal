@@ -1,10 +1,12 @@
 using AutoMapper;
 using OnlineJobPortal.Common.Dtos;
+using OnlineJobPortal.Common.Models.Company;
 using OnlineJobPortal.Common.Models.Contact;
 using OnlineJobPortal.Common.Models.Education;
 using OnlineJobPortal.Common.Models.Resume;
 using OnlineJobPortal.Common.Models.Skill;
 using OnlineJobPortal.Common.Models.User;
+using OnlineJobPortal.Common.Models.Vacancy;
 using OnlineJobPortal.Common.Models.WorkExperiance;
 using OnlineJobPortal.Data.Entities;
 
@@ -24,8 +26,9 @@ public class MapperProfile : Profile
         CreateMap<Resume, ResumeDto>();
         CreateMap<User, UserDto>();
         CreateMap<Language, LanguageDto>();
-
-
+        CreateMap<CreateCompanyModel, Company>();
+        CreateMap<CreateVacancyModel, Vacancy>();
+        CreateMap<Vacancy,VacancyDto>();
 
 
 

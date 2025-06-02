@@ -1,4 +1,5 @@
 using OnlineJobPortal.Common.CustomAttributes;
+using OnlineJobPortal.Common.Statics;
 using System.ComponentModel.DataAnnotations;
 
 namespace OnlineJobPortal.Common.Models.User;
@@ -15,4 +16,7 @@ public class LoginModel
     [StringLength(255)]
     [Required]
     public string Password { get; set; } = string.Empty;
+
+    public int Role { get; set; } = StaticData.Worker;
+
 }
