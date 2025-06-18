@@ -12,7 +12,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{58970F6A-D229-47C2-A61C-E1286262DBB6}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		minio.yaml = minio.yaml
 		postgres.yaml = postgres.yaml
+		redis.yaml = redis.yaml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8EBA53F2-5984-4340-930C-90F3E43DA2E5}"

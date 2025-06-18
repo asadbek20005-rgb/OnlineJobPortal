@@ -21,6 +21,7 @@ public class RegisterModel
     public string ConfirmPassword { get; set; } = string.Empty;
 
 
-
+    [Required]
+    public int RoleId { get; set; }
 
 }

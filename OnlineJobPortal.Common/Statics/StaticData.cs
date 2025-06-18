@@ -7,5 +7,5 @@ public static class StaticData
     public const string BaseUrl = "https://4elj86.api.infobip.com";
     public const string Sender = "InfoSMS";
     public const int Holder = 1;
-    public const int Worker = 1;
+    public const int Worker = 2;
 }

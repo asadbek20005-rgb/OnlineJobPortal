@@ -20,7 +20,8 @@ public class UserService(IBaseRepository<User> userRepository, IMapper mapper,
     IOtpService otpService,
     IValidator<UpdateUserBasicDetailModel> validator,
     IValidator<RegisterModel> registerValidator,
-    IValidator<OtpModel> otpValidator) : StatusGenericHandler, IUserService
+    IValidator<OtpModel> otpValidator,
+    IBaseRepository<Role> roleRepository) : StatusGenericHandler, IUserService
 {
     private readonly IBaseRepository<User> _userRepository = userRepository;
     private readonly IBaseRepository<City> _cityRepository = cityRepository;
@@ -30,6 +31,7 @@ public class UserService(IBaseRepository<User> userRepository, IMapper mapper,
     private readonly IValidator<UpdateUserBasicDetailModel> _validator = validator;
     private readonly IValidator<RegisterModel> _registerValidator = registerValidator;
     private readonly IValidator<OtpModel> _otpValidator = otpValidator;
+    private readonly IBaseRepository<Role> _roleRepository = roleRepository;
 
     public async Task<int?> RegisterAsync(RegisterModel model)
     {
@@ -52,7 +54,7 @@ public class UserService(IBaseRepository<User> userRepository, IMapper mapper,
 
         var newUser = _mapper.Map<User>(model);
         newUser.PasswordHash = HashPassword(newUser, model.Password);
-        newUser.RoleId = 2;
+        newUser.RoleId = await GetRoleIdAsync(model.RoleId);
 
         await _redisService.SetItemAsync(StaticData.UserRedisKey, newUser);
         int code = await _otpService.GenerateCodeToPhoneNumberAsync(model.PhoneNumber);
@@ -246,6 +248,12 @@ public class UserService(IBaseRepository<User> userRepository, IMapper mapper,
     }
 
 
+    private async Task<int> GetRoleIdAsync(int id)
+    {
+        int roleId = await (await _roleRepository.GetAllAsync())
+            .Where(x => x.Id == id).Select(x => x.Id).FirstOrDefaultAsync();
+        return roleId;
+    }
 
 
     #endregion
