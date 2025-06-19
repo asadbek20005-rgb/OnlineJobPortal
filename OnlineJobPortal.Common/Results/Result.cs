@@ -15,7 +15,7 @@ public class Result<T>
     }
 
 
-    public static Result<T> Success(T value) => new Result<T>(true, default, value);
+    public static Result<T> Success(T value) => new Result<T>(true, default, value);    
 
     public static Result<T> BadRequest(string error) => new Result<T>(false, error, default);
 }

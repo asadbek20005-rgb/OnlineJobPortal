@@ -39,4 +39,19 @@ public static class VacancyEndpoints
             return Result<List<VacancyDto>>.BadRequest(errors);
         }).WithTags("Vacancies");
     }
+
+    public static void GetVacancyFilter(this WebApplication app)
+    {
+        app.MapGet("/api/Vacancies/filter", async (IVacancyService service, [AsParameters] VacancyFilterModel model) =>
+        {
+            var vacancyDtos = await service.GetAllVacanciesBy(model);
+            if (service.IsValid)
+            {
+                return Result<List<VacancyDto>>.Success(vacancyDtos);
+            }
+            var errors = service.GetAllErrors();
+            return Result<List<VacancyDto>>.BadRequest(errors);
+        }).WithTags("Vacancies"); ;
+    }
+
 }

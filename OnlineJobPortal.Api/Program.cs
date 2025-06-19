@@ -32,7 +32,7 @@ builder.Services.AddScoped<IRedisService, RedisService>();
 builder.Services.AddScoped<IOtpService, OtpService>();
 builder.Services.AddScoped<IResumeService, ResumeService>();
 builder.Services.AddScoped<IContentService, ContentService>();
-builder.Services.AddScoped<IVacancyService, VacancyService>();  
+builder.Services.AddScoped<IVacancyService, VacancyService>();
 builder.Services.AddSingleton<IMinioService, MinioService>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateResumeValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateSkillValidator>();
@@ -47,6 +47,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<UpdateEducationValidator>()
 builder.Services.AddValidatorsFromAssemblyContaining<UpdateUserBasicDetailValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<UpdateWorkExperianceValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<RegisterModelValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<VacancyFilterModelValidator>();
 
 builder.Services.AddDbContext<OnlineJobPortalDbContext>(options =>
 {
@@ -118,6 +119,5 @@ app.UseCors();
 app.UseAuthorization();
 
 app.MapControllers();
-app.CreateVacancy();
-app.GetAll();   
+app.EndPoints();
 app.Run();

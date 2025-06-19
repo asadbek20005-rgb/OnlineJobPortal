@@ -16,10 +16,12 @@ public class VacancyService(
     IValidator<CreateVacancyModel> validator,
     IMapper mapper,
     IBaseRepository<Company> companyRepository,
-    IBaseRepository<User> userRepository) : StatusGenericHandler, IVacancyService
+    IBaseRepository<User> userRepository,
+    IValidator<VacancyFilterModel> validator1) : StatusGenericHandler, IVacancyService
 {
     private readonly IBaseRepository<Vacancy> _vacancyRepository = vacancyRepository;
     private readonly IValidator<CreateVacancyModel> _validator = validator;
+    private readonly IValidator<VacancyFilterModel> _validator2 = validator1;
     private readonly IMapper _mapper = mapper;
     private readonly IBaseRepository<Company> _companyRepository = companyRepository;
     private readonly IBaseRepository<User> _userRepository = userRepository;
@@ -35,14 +37,14 @@ public class VacancyService(
             return;
         }
 
-        bool employerExist = await (await _userRepository.GetAllAsync())
-            .AnyAsync(x => x.id == employerId && x.RoleId == StaticData.Holder);
+        //bool employerExist = await (await _userRepository.GetAllAsync())
+        //    .AnyAsync(x => x.id == employerId && x.RoleId == StaticData.Holder);
 
-        if (employerExist is false)
-        {
-            AddError("No such employer");
-            return;
-        }
+        //if (employerExist is false)
+        //{
+        //    AddError("No such employer");
+        //    return;
+        //}
 
 
         using var transaction = await _vacancyRepository.BeginTransactionAsync();
@@ -67,8 +69,8 @@ public class VacancyService(
                 throw new Exception(ex.Message);
             }
         }
-
     }
+
 
     public async Task<List<VacancyDto>> GetAll()
     {
@@ -76,5 +78,47 @@ public class VacancyService(
 
         return _mapper.Map<List<VacancyDto>>(vacancies);
     }
+
+    public async Task<List<VacancyDto>?> GetAllVacanciesBy(VacancyFilterModel model)
+    {
+        var vacancies = await _vacancyRepository.GetAllAsync();
+        var validationResult = await _validator2.ValidateAsync(model);
+        var dtos = new List<VacancyDto>();
+        if (!validationResult.IsValid)
+        {
+            foreach (var error in validationResult.Errors)
+            {
+                AddError($"Error: {error}");
+            }
+            return null;
+        }
+
+
+        if (model.ProfessionId.HasValue)
+        {
+            dtos = _mapper.Map<List<VacancyDto>>(vacancies.Where(x => x.ProfessionId == model.ProfessionId));
+        }
+
+        if (model.CityId.HasValue)
+        {
+            bool companyExist = await (await _companyRepository.GetAllAsync()).AnyAsync(x => x.CityId == model.CityId);
+            if (companyExist)
+            {
+                dtos = _mapper.Map<List<VacancyDto>>(vacancies.Where(x => x.Company!.CityId == model.CityId));
+
+            }
+
+        }
+
+
+        if (!string.IsNullOrWhiteSpace(model.Name))
+        {
+            bool companyExist = await (await _companyRepository.GetAllAsync()).AnyAsync(x => x.CityId == model.CityId);
+            if (companyExist)
+                dtos = _mapper.Map<List<VacancyDto>>(vacancies.Where(x => x.Company!.Name == model.Name));
+        }
+
+
+        return dtos;
+    }
 }
-  
