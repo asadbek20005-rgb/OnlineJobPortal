@@ -30,6 +30,7 @@ public class OnlineJobPortalDbContext : DbContext
     public DbSet<WorkExperience> WorkExperiences { get; set; }
     public DbSet<WorkingHour> WorkingHours { get; set; }
     public DbSet<Otp> Otps { get; set; }
+    public DbSet<Log> Logs { get; set; }
 
 
 

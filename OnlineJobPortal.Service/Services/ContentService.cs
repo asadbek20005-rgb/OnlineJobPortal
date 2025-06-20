@@ -21,7 +21,7 @@ public class ContentService(
     public async Task<Stream?> DownloadImgAsync(Guid userId, string fileName)
     {
         Result<UserDto> user = await _userService.GetProfileAsync(userId);
-        if (user.Value is null)
+        if (user.Data is null)
         {
             AddError("User not found");
             return null;
@@ -44,7 +44,7 @@ public class ContentService(
     public async Task<string> UploadImgAsync(Guid userId, IFormFile file)
     {
         Result<UserDto> user = await _userService.GetProfileAsync(userId);
-        if (user.Value is null)
+        if (user.Data is null)
         {
             AddError("User not found");
             return string.Empty;
@@ -58,7 +58,7 @@ public class ContentService(
         {
             FileName = filename,
             ContentType = contentType,
-            UserId = user.Value.id,
+            UserId = user.Data.id,
         };
 
         await _contentRepository.AddAsync(newContent);

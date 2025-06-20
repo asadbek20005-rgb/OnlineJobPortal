@@ -70,7 +70,7 @@ public class UsersController(IUserService userService) : ControllerBase
     public async Task<IActionResult> GetProfile(Guid userId)
     {
         Result<UserDto> user = await _userService.GetProfileAsync(userId);
-        if (_userService.IsValid && user.IsSuccess)
+        if (_userService.IsValid && user.Success)
         {
             return Ok(user);
         }

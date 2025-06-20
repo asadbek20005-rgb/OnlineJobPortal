@@ -16,10 +16,10 @@ public static class VacancyEndpoints
             await service.CreateAsync(employerId, model);
             if (service.IsValid)
             {
-                return Result<Vacancy>.Success(null);
+                return Result<Vacancy>.SuccessResult(null);
             }
             var errors = service.GetAllErrors();
-            return Result<Vacancy>.BadRequest(errors);
+            return Result<Vacancy>.Failure(errors);
         })
             .WithTags("Vacancies");
     }
@@ -32,11 +32,11 @@ public static class VacancyEndpoints
             var vacancies = await service.GetAll();
             if (service.IsValid)
             {
-                return Result<List<VacancyDto>>.Success(vacancies);
+                return Result<List<VacancyDto>>.SuccessResult(vacancies);
             }
 
             var errors = service.GetAllErrors();
-            return Result<List<VacancyDto>>.BadRequest(errors);
+            return Result<List<VacancyDto>>.Failure(errors);
         }).WithTags("Vacancies");
     }
 
@@ -47,10 +47,10 @@ public static class VacancyEndpoints
             var vacancyDtos = await service.GetAllVacanciesBy(model);
             if (service.IsValid)
             {
-                return Result<List<VacancyDto>>.Success(vacancyDtos);
+                return Result<List<VacancyDto>>.SuccessResult(vacancyDtos);
             }
             var errors = service.GetAllErrors();
-            return Result<List<VacancyDto>>.BadRequest(errors);
+            return Result<List<VacancyDto>>.Failure(errors);
         }).WithTags("Vacancies"); ;
     }
 

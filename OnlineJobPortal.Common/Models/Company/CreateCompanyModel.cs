@@ -14,5 +14,4 @@ public class CreateCompanyModel
 
     [Required]
     public int CityId { get; set; }
-
 }

@@ -2,20 +2,17 @@ namespace OnlineJobPortal.Common.Results;
 
 public class Result<T>
 {
-    public bool IsSuccess { get; private set; }
-    public string? Error { get; private set; }
-    public T? Value { get; private set; }
+    public bool Success { get; set; }
+    public string Message { get; set; }
+    public T? Data { get; set; }
 
-
-    public Result(bool isSuccess, string? error, T? value)
+    public static Result<T> SuccessResult(T data, string message = "Success")
     {
-        IsSuccess = isSuccess;
-        Error = error;
-        Value = value;
+        return new Result<T> { Success = true, Message = message, Data = data };
     }
 
-
-    public static Result<T> Success(T value) => new Result<T>(true, default, value);    
-
-    public static Result<T> BadRequest(string error) => new Result<T>(false, error, default);
+    public static Result<T> Failure(string message)
+    {
+        return new Result<T> { Success = false, Message = message, Data = default };
+    }
 }

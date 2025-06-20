@@ -14,14 +14,16 @@ using StatusGeneric;
 
 namespace OnlineJobPortal.Service.Services;
 
-public class UserService(IBaseRepository<User> userRepository, IMapper mapper,
+public class UserService(
+    IBaseRepository<User> userRepository, 
     IBaseRepository<City> cityRepository,
+    IBaseRepository<Role> roleRepository,
     IRedisService redisService,
     IOtpService otpService,
     IValidator<UpdateUserBasicDetailModel> validator,
     IValidator<RegisterModel> registerValidator,
     IValidator<OtpModel> otpValidator,
-    IBaseRepository<Role> roleRepository) : StatusGenericHandler, IUserService
+    IMapper mapper) : StatusGenericHandler, IUserService
 {
     private readonly IBaseRepository<User> _userRepository = userRepository;
     private readonly IBaseRepository<City> _cityRepository = cityRepository;
@@ -137,10 +139,10 @@ public class UserService(IBaseRepository<User> userRepository, IMapper mapper,
 
         if (user is null)
         {
-            return Result<UserDto>.BadRequest("User Not Found");
+            return Result<UserDto>.Failure("User Not Found");
         }
         UserDto userDto = _mapper.Map<UserDto>(user);
-        return Result<UserDto>.Success(userDto);
+        return Result<UserDto>.SuccessResult(userDto);
     }
 
     public async Task EditProfileAsync(Guid userId, UpdateUserBasicDetailModel model)
@@ -214,7 +216,7 @@ public class UserService(IBaseRepository<User> userRepository, IMapper mapper,
 
 
     #region privateMethods
-    private async Task<bool> UserIsExistInDb(string phoneNumber)
+    public async Task<bool> UserIsExistInDb(string phoneNumber)
     {
         bool isUserExist = await (await _userRepository.GetAllAsync())
             .AnyAsync(user => user.PhoneNumber == phoneNumber);

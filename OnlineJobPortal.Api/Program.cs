@@ -34,6 +34,7 @@ builder.Services.AddScoped<IResumeService, ResumeService>();
 builder.Services.AddScoped<IContentService, ContentService>();
 builder.Services.AddScoped<IVacancyService, VacancyService>();
 builder.Services.AddSingleton<IMinioService, MinioService>();
+builder.Services.AddScoped<IJsonParserService, JsonParserService>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateResumeValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateSkillValidator>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateContactValidator>();
@@ -113,11 +114,13 @@ else
     app.UseExceptionHandlerMiddleware();
 }
 
-app.UseMiddleware<ExceptionMiddleware>();
+app.UseMiddleware<ExceptionMiddleware>()
+    .UseMiddleware<LogingMiddleware>()
+    .UseMiddleware<UniformResponseModelMiddleware>()
+    .UseMiddleware<RequestTimingMiddleware>();
 app.UseHttpsRedirection();
 app.UseCors();
 app.UseAuthorization();
-
 app.MapControllers();
 app.EndPoints();
 app.Run();

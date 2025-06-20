@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineJobPortal.Common", "O
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineJobPortal.Service", "OnlineJobPortal.Service\OnlineJobPortal.Service.csproj", "{F79BAB53-2990-4A41-B526-E109A37AADE5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{10CDFF92-D32D-4ED6-A3C9-05B86DA0223E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{E947F7E8-F7EF-4A06-A6AB-BB0B1C9F705F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,10 @@ Global
 		{F79BAB53-2990-4A41-B526-E109A37AADE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F79BAB53-2990-4A41-B526-E109A37AADE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F79BAB53-2990-4A41-B526-E109A37AADE5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E947F7E8-F7EF-4A06-A6AB-BB0B1C9F705F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E947F7E8-F7EF-4A06-A6AB-BB0B1C9F705F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E947F7E8-F7EF-4A06-A6AB-BB0B1C9F705F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E947F7E8-F7EF-4A06-A6AB-BB0B1C9F705F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +66,7 @@ Global
 		{C5F0918B-5F11-4D17-8418-3C7D61DEB19B} = {8EBA53F2-5984-4340-930C-90F3E43DA2E5}
 		{11425033-2261-45DF-854C-B5F28656F26D} = {8EBA53F2-5984-4340-930C-90F3E43DA2E5}
 		{F79BAB53-2990-4A41-B526-E109A37AADE5} = {8EBA53F2-5984-4340-930C-90F3E43DA2E5}
+		{E947F7E8-F7EF-4A06-A6AB-BB0B1C9F705F} = {10CDFF92-D32D-4ED6-A3C9-05B86DA0223E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F3D97427-B116-419A-97BE-6C375CECA2E5}

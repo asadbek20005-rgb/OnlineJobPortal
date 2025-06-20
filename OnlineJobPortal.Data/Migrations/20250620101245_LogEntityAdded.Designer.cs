@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OnlineJobPortal.Data.Contexts;
@@ -11,9 +12,11 @@ using OnlineJobPortal.Data.Contexts;
 namespace OnlineJobPortal.Data.Migrations
 {
     [DbContext(typeof(OnlineJobPortalDbContext))]
-    partial class OnlineJobPortalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250620101245_LogEntityAdded")]
+    partial class LogEntityAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -352,41 +355,35 @@ namespace OnlineJobPortal.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasColumnName("id");
+                        .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Level")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("level");
+                        .HasColumnType("text");
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("message");
+                        .HasColumnType("text");
 
                     b.Property<string>("Method")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("method");
+                        .HasColumnType("text");
 
                     b.Property<string>("Path")
                         .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("path");
+                        .HasColumnType("text");
 
-                    b.Property<int>("StatusCode")
-                        .HasColumnType("integer")
-                        .HasColumnName("status_code");
+                    b.Property<int?>("StatusCode")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
-                    b.ToTable("logs", "application");
+                    b.ToTable("Logs");
                 });
 
             modelBuilder.Entity("OnlineJobPortal.Data.Entities.Otp", b =>
