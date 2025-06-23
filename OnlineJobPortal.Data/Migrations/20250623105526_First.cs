@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace OnlineJobPortal.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class FIrst : Migration
+    public partial class First : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -199,6 +199,25 @@ namespace OnlineJobPortal.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "logs",
+                schema: "application",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    level = table.Column<string>(type: "text", nullable: false),
+                    message = table.Column<string>(type: "text", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    path = table.Column<string>(type: "text", nullable: false),
+                    method = table.Column<string>(type: "text", nullable: false),
+                    status_code = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_logs", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "otps",
                 schema: "application",
                 columns: table => new
@@ -379,6 +398,11 @@ namespace OnlineJobPortal.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     profession_id = table.Column<int>(type: "integer", nullable: false),
                     company_id = table.Column<int>(type: "integer", nullable: false),
+                    is_favourite = table.Column<bool>(type: "boolean", nullable: false),
+                    responsibilities = table.Column<string>(type: "text", nullable: false),
+                    details = table.Column<string>(type: "text", nullable: true),
+                    working_hour_id = table.Column<int>(type: "integer", nullable: false, defaultValue: 1),
+                    type_of_employment = table.Column<int>(type: "integer", nullable: false, defaultValue: 1),
                     created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
@@ -397,6 +421,43 @@ namespace OnlineJobPortal.Data.Migrations
                         column: x => x.profession_id,
                         principalSchema: "info",
                         principalTable: "info_professions",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_vacancies_info_types_of_employment_type_of_employment",
+                        column: x => x.type_of_employment,
+                        principalSchema: "info",
+                        principalTable: "info_types_of_employment",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_vacancies_info_working_hours_working_hour_id",
+                        column: x => x.working_hour_id,
+                        principalSchema: "info",
+                        principalTable: "info_working_hours",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "contents",
+                schema: "application",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    file_name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    content_type = table.Column<string>(type: "text", nullable: false),
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_contents", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_contents_users_user_id",
+                        column: x => x.user_id,
+                        principalSchema: "application",
+                        principalTable: "users",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -493,11 +554,48 @@ namespace OnlineJobPortal.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "replies",
+                schema: "application",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    employer_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    vacancy_id = table.Column<int>(type: "integer", nullable: false),
+                    created_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    updated_date = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_replies", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_replies_users_employer_id",
+                        column: x => x.employer_id,
+                        principalSchema: "application",
+                        principalTable: "users",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_replies_vacancies_vacancy_id",
+                        column: x => x.vacancy_id,
+                        principalSchema: "application",
+                        principalTable: "vacancies",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_companies_city_id",
                 schema: "application",
                 table: "companies",
                 column: "city_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_contents_user_id",
+                schema: "application",
+                table: "contents",
+                column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_educations_level_id",
@@ -510,6 +608,18 @@ namespace OnlineJobPortal.Data.Migrations
                 schema: "info",
                 table: "info_skills",
                 column: "level_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_replies_employer_id",
+                schema: "application",
+                table: "replies",
+                column: "employer_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_replies_vacancy_id",
+                schema: "application",
+                table: "replies",
+                column: "vacancy_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_resumes_contact_id",
@@ -606,13 +716,37 @@ namespace OnlineJobPortal.Data.Migrations
                 schema: "application",
                 table: "vacancies",
                 column: "profession_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_vacancies_type_of_employment",
+                schema: "application",
+                table: "vacancies",
+                column: "type_of_employment");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_vacancies_working_hour_id",
+                schema: "application",
+                table: "vacancies",
+                column: "working_hour_id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "contents",
+                schema: "application");
+
+            migrationBuilder.DropTable(
+                name: "logs",
+                schema: "application");
+
+            migrationBuilder.DropTable(
                 name: "otps",
+                schema: "application");
+
+            migrationBuilder.DropTable(
+                name: "replies",
                 schema: "application");
 
             migrationBuilder.DropTable(
@@ -640,14 +774,6 @@ namespace OnlineJobPortal.Data.Migrations
                 schema: "info");
 
             migrationBuilder.DropTable(
-                name: "info_types_of_employment",
-                schema: "info");
-
-            migrationBuilder.DropTable(
-                name: "info_working_hours",
-                schema: "info");
-
-            migrationBuilder.DropTable(
                 name: "users",
                 schema: "application");
 
@@ -661,6 +787,14 @@ namespace OnlineJobPortal.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "info_professions",
+                schema: "info");
+
+            migrationBuilder.DropTable(
+                name: "info_types_of_employment",
+                schema: "info");
+
+            migrationBuilder.DropTable(
+                name: "info_working_hours",
                 schema: "info");
 
             migrationBuilder.DropTable(

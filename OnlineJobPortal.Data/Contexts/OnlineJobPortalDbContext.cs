@@ -31,6 +31,7 @@ public class OnlineJobPortalDbContext : DbContext
     public DbSet<WorkingHour> WorkingHours { get; set; }
     public DbSet<Otp> Otps { get; set; }
     public DbSet<Log> Logs { get; set; }
+    public DbSet<Reply> Replies { get; set; }
 
 
 
@@ -50,6 +51,20 @@ public class OnlineJobPortalDbContext : DbContext
 
         modelBuilder.Entity<Resume>()
             .HasQueryFilter(resume => !resume.IsDeleted && !resume.IsHided);
+
+        modelBuilder.Entity<Vacancy>()
+            .Property(x => x.TypeOfEmploymentId)
+            .HasDefaultValue(1);
+
+        modelBuilder.Entity<Vacancy>()
+           .Property(x => x.WorkingHourId)
+           .HasDefaultValue(1);
+
+
+
+
+
+
     }
 
 

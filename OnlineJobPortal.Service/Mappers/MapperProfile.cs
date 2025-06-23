@@ -16,7 +16,7 @@ public class MapperProfile : Profile
 {
     public MapperProfile()
     {
-        CreateMap<RegisterModel, User>();
+        CreateMap<RegisterModel, User>();       
         CreateMap<CreateUserBasicDetailModel, User>();
         CreateMap<CreateWorkExperianceModel, WorkExperience>();
         CreateMap<CreateContactModel, Contact>();
@@ -97,10 +97,10 @@ public class MapperProfile : Profile
 
 
         CreateMap<UpdateVacancyModel, Vacancy>()
-            .ForMember(dest => dest.ProfessionId, opts => opts.Condition(src => src.ProfessionId != null));
+            .ForMember(dest => dest.ProfessionId, opts => opts.Condition(src => src.ProfessionId != null))
+            .ForMember(dest => dest.Responsibilities, opts => opts.Condition(src => src.Responsibilities != null))
+            .ForMember(dest => dest.Details, opts => opts.Condition(src => src.Details != null));
 
-
-
-
+   
     }
 }

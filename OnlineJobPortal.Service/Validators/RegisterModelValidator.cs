@@ -8,7 +8,7 @@ namespace OnlineJobPortal.Service.Validators;
 
 public class RegisterModelValidator : AbstractValidator<RegisterModel>
 {
-    public RegisterModelValidator(IBaseRepository<Role> roleRepository)
+    public RegisterModelValidator(IBaseRepository<Role> roleRepository, IBaseRepository<Vacancy> vacancyRepository)
     {
 
 
@@ -24,6 +24,9 @@ public class RegisterModelValidator : AbstractValidator<RegisterModel>
                 bool roleExist = await (await roleRepository.GetAllAsync()).AnyAsync(x => x.Id == roleId);
                 return roleExist;
             }).WithMessage("Invalid Role Id");
+
+
+
     }
 
 

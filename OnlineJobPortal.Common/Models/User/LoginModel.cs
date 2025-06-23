@@ -17,6 +17,6 @@ public class LoginModel
     [Required]
     public string Password { get; set; } = string.Empty;
 
-    public int Role { get; set; } = StaticData.Worker;
+    public int Role { get; set; }
 
 }

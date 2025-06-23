@@ -28,5 +28,4 @@ public class Company : Date
 
     [ForeignKey(nameof(CityId))]
     public City? City { get; set; } = null!;
-
 }

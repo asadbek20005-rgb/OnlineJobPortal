@@ -16,7 +16,8 @@ public class VacancyService(
     IMapper mapper,
     IBaseRepository<Company> companyRepository,
     IBaseRepository<User> userRepository,
-    IValidator<VacancyFilterModel> validator1) : StatusGenericHandler, IVacancyService
+    IValidator<VacancyFilterModel> validator1,
+    IBaseRepository<Reply> replyRepository) : StatusGenericHandler, IVacancyService
 {
     private readonly IBaseRepository<Vacancy> _vacancyRepository = vacancyRepository;
     private readonly IValidator<CreateVacancyModel> _validator = validator;
@@ -24,7 +25,9 @@ public class VacancyService(
     private readonly IMapper _mapper = mapper;
     private readonly IBaseRepository<Company> _companyRepository = companyRepository;
     private readonly IBaseRepository<User> _userRepository = userRepository;
+    private readonly IBaseRepository<Reply> _replyRepository = replyRepository;
 
+    #region Ready Actions
     public async Task CreateAsync(Guid employerId, CreateVacancyModel model)
     {
         var validationResult = await _validator.ValidateAsync(model);
@@ -37,20 +40,21 @@ public class VacancyService(
             return;
         }
 
-        //bool employerExist = await (await _userRepository.GetAllAsync())
-        //    .AnyAsync(x => x.id == employerId && x.RoleId == StaticData.Holder);
+        bool employerExist = await (await _userRepository.GetAllAsync())
+            .AnyAsync(x => x.id == employerId);
 
-        //if (employerExist is false)
-        //{
-        //    AddError("No such employer");
-        //    return;
-        //}
+        if (employerExist is false)
+        {
+            AddError("No such employer");
+            return;
+        }
 
 
         using var transaction = await _vacancyRepository.BeginTransactionAsync();
         {
             try
             {
+
                 Company company = _mapper.Map<Company>(model.CreateCompanyModel);
                 await _companyRepository.AddAsync(company);
                 await _companyRepository.SaveChangesAsync();
@@ -58,8 +62,10 @@ public class VacancyService(
                 Vacancy vacancy = _mapper.Map<Vacancy>(model);
                 vacancy.CompanyId = company.Id;
 
+
                 await _vacancyRepository.AddAsync(vacancy);
                 await _vacancyRepository.SaveChangesAsync();
+
                 await transaction.CommitAsync();
 
             }
@@ -118,6 +124,24 @@ public class VacancyService(
                     dtos = _mapper.Map<List<VacancyDto>>(vacancies.Where(x => x.Company!.Name == model.Name));
             }
 
+            if (model.WorkingHourId.HasValue)
+            {
+                var vacancies1 = await (await _vacancyRepository.GetAllAsync())
+                   .Where(v => v.WorkingHourId == model.WorkingHourId)
+                   .ToListAsync();
+
+                dtos = _mapper.Map<List<VacancyDto>>(vacancies1);
+            }
+
+            if (model.TypeOfEmployemntId.HasValue)
+            {
+                var vacancies1 = await (await _vacancyRepository.GetAllAsync())
+                   .Where(v => v.TypeOfEmploymentId == model.TypeOfEmployemntId)
+                   .ToListAsync();
+
+                dtos = _mapper.Map<List<VacancyDto>>(vacancies1);
+            }
+
             await transcation.CommitAsync();
             return dtos;
 
@@ -143,11 +167,6 @@ public class VacancyService(
         await _vacancyRepository.UpdateAsync(vacancy);
         await _vacancyRepository.SaveChangesAsync();
     }
-
-
-
-
-
     public async Task DeleteAsync(int vacancyId)
     {
         Vacancy? vacancy = await _vacancyRepository.GetByIdAsync(vacancyId);
@@ -159,14 +178,46 @@ public class VacancyService(
         await _vacancyRepository.DeleteAsync(vacancy);
         await _vacancyRepository.SaveChangesAsync();
     }
-
-    public Task Reply()
+    public async Task ReplyAsync(int vacancyId, ReplyModel model)
     {
-        throw new NotImplementedException();
+        var employerReplied = await (await _replyRepository.GetAllAsync()).AnyAsync(x => x.EmployerId == model.EmployerId
+        && vacancyId == x.VacancyId);
+
+        if (employerReplied)
+        {
+            AddError($"Employer with  id:{model.EmployerId} is already replied to this vacancy");
+            return;
+        }
+
+        var newEmloyer = new Reply
+        {
+            EmployerId = model.EmployerId,
+            VacancyId = vacancyId,
+        };
+
+        await _replyRepository.AddAsync(newEmloyer);
+        await _replyRepository.SaveChangesAsync();
+    }
+    public async Task UpdateAsync(int vacancyId, UpdateVacancyModel? model)
+    {
+        Vacancy? vacancy = await _vacancyRepository.GetByIdAsync(vacancyId);
+
+        if (vacancy is null)
+        {
+            AddError("Vacancy not Found");
+            return;
+        }
+
+        Vacancy? updatedVacancy = _mapper.Map(model, vacancy);
+
+        await _vacancyRepository.UpdateAsync(updatedVacancy);
+        await _vacancyRepository.SaveChangesAsync();
+
     }
 
-    public Task UpdateAsync(int vacancyId, UpdateVacancyModel model)
-    {
-        throw new NotImplementedException();
-    }
+    #endregion
+
+
+
+
 }

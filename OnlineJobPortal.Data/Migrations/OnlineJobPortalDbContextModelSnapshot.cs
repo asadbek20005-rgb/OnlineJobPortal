@@ -469,6 +469,42 @@ namespace OnlineJobPortal.Data.Migrations
                     b.ToTable("info_professions", "info");
                 });
 
+            modelBuilder.Entity("OnlineJobPortal.Data.Entities.Reply", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_date")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<Guid>("EmployerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("employer_id");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_date");
+
+                    b.Property<int>("VacancyId")
+                        .HasColumnType("integer")
+                        .HasColumnName("vacancy_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployerId");
+
+                    b.HasIndex("VacancyId");
+
+                    b.ToTable("replies", "application");
+                });
+
             modelBuilder.Entity("OnlineJobPortal.Data.Entities.Resume", b =>
                 {
                     b.Property<int>("Id")
@@ -836,6 +872,10 @@ namespace OnlineJobPortal.Data.Migrations
                         .HasColumnName("created_date")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
+                    b.Property<string>("Details")
+                        .HasColumnType("text")
+                        .HasColumnName("details");
+
                     b.Property<bool>("IsFavourite")
                         .HasColumnType("boolean")
                         .HasColumnName("is_favourite");
@@ -844,15 +884,36 @@ namespace OnlineJobPortal.Data.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("profession_id");
 
+                    b.Property<string>("Responsibilities")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("responsibilities");
+
+                    b.Property<int>("TypeOfEmploymentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1)
+                        .HasColumnName("type_of_employment");
+
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("updated_date");
+
+                    b.Property<int>("WorkingHourId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1)
+                        .HasColumnName("working_hour_id");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CompanyId");
 
                     b.HasIndex("ProfessionId");
+
+                    b.HasIndex("TypeOfEmploymentId");
+
+                    b.HasIndex("WorkingHourId");
 
                     b.ToTable("vacancies", "application");
                 });
@@ -988,6 +1049,25 @@ namespace OnlineJobPortal.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Level");
+                });
+
+            modelBuilder.Entity("OnlineJobPortal.Data.Entities.Reply", b =>
+                {
+                    b.HasOne("OnlineJobPortal.Data.Entities.User", "Employer")
+                        .WithMany()
+                        .HasForeignKey("EmployerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineJobPortal.Data.Entities.Vacancy", "Vacancy")
+                        .WithMany()
+                        .HasForeignKey("VacancyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employer");
+
+                    b.Navigation("Vacancy");
                 });
 
             modelBuilder.Entity("OnlineJobPortal.Data.Entities.Resume", b =>
@@ -1127,9 +1207,25 @@ namespace OnlineJobPortal.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("OnlineJobPortal.Data.Entities.TypeOfEmployment", "TypeOfEmployment")
+                        .WithMany()
+                        .HasForeignKey("TypeOfEmploymentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("OnlineJobPortal.Data.Entities.WorkingHour", "WorkingHour")
+                        .WithMany()
+                        .HasForeignKey("WorkingHourId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Company");
 
                     b.Navigation("Profession");
+
+                    b.Navigation("TypeOfEmployment");
+
+                    b.Navigation("WorkingHour");
                 });
 
             modelBuilder.Entity("OnlineJobPortal.Data.Entities.User", b =>
