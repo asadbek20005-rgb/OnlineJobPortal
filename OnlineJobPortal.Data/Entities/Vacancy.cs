@@ -23,4 +23,8 @@ public class Vacancy : Date
 
     [ForeignKey(nameof(CompanyId))]
     public Company? Company { get; set; } = null!;
+
+
+    [Column("is_favourite")]
+    public bool IsFavourite { get; set; } = false;
 }

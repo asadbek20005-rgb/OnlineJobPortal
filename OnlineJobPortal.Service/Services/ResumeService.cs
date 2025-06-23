@@ -86,25 +86,38 @@ public class ResumeService(
 
     public async Task DeletePerminanlyAsync(Guid userId, int resumeId)
     {
-        var user = await _userRepository.GetByIdAsync(userId);
-        if (user is null)
+        using var transaction = await _resumeRepository.BeginTransactionAsync();
+
+        try
         {
-            AddError("No such user");
-            return;
+
+            var user = await _userRepository.GetByIdAsync(userId);
+            if (user is null)
+            {
+                AddError("No such user");
+                return;
+            }
+
+            Resume? resume = await (await _resumeRepository.GetAllAsync())
+                .Where(resume => resume.UserId == user.id)
+                .FirstOrDefaultAsync();
+
+            if (resume is null)
+            {
+                AddError($"Resume not found");
+                return;
+            }
+
+            resume.IsDeleted = true;
+            await _resumeRepository.SaveChangesAsync();
+
+            await transaction.CommitAsync();
         }
-
-        Resume? resume = await (await _resumeRepository.GetAllAsync())
-            .Where(resume => resume.UserId == user.id)
-            .FirstOrDefaultAsync();
-
-        if (resume is null)
+        catch (Exception ex)
         {
-            AddError($"Resume not found");
-            return;
+            await transaction.RollbackAsync();
+            throw new Exception(ex.Message);
         }
-
-        resume.IsDeleted = true;
-        await _resumeRepository.SaveChangesAsync();
 
     }
 
@@ -119,23 +132,34 @@ public class ResumeService(
             }
             return;
         }
-
-
-        Resume? resume = await (await _resumeRepository.GetAllAsync())
-            .Where(resume => resume.UserId == userId && resume.Id == resumeId)
-            .FirstOrDefaultAsync();
-
-        if (resume is null)
+        using var transaction = await _resumeRepository.BeginTransactionAsync();
+        try
         {
-            AddError("No such resume");
-            return;
+
+            Resume? resume = await (await _resumeRepository.GetAllAsync())
+                .Where(resume => resume.UserId == userId && resume.Id == resumeId)
+                .FirstOrDefaultAsync();
+
+            if (resume is null)
+            {
+                AddError("No such resume");
+                return;
+            }
+
+            Resume updatedResume = _mapper.Map(model, resume);
+
+
+            await _resumeRepository.UpdateAsync(updatedResume);
+            await _userRepository.SaveChangesAsync();
+
+            await transaction.CommitAsync();
+        }
+        catch (Exception e)
+        {
+            await transaction.RollbackAsync();
+            throw new Exception(e.Message);
         }
 
-        Resume updatedResume = _mapper.Map(model, resume);
-
-
-        await _resumeRepository.UpdateAsync(updatedResume);
-        await _userRepository.SaveChangesAsync();
     }
 
     public async Task<List<ResumeDto>> GetAllResumesAsync()
@@ -174,25 +198,36 @@ public class ResumeService(
 
     public async Task HideAsync(Guid userId, int resumeId)
     {
-        var user = await _userRepository.GetByIdAsync(userId);
-        if (user is null)
+        using var transaction = await _resumeRepository.BeginTransactionAsync();
+        try
         {
-            AddError("No such user");
-            return;
+            var user = await _userRepository.GetByIdAsync(userId);
+            if (user is null)
+            {
+                AddError("No such user");
+                return;
+            }
+
+            Resume? resume = await (await _resumeRepository.GetAllAsync())
+                .Where(resume => resume.UserId == user.id)
+                .FirstOrDefaultAsync();
+
+            if (resume is null)
+            {
+                AddError($"Resume not found");
+                return;
+            }
+
+            resume.IsHided = true;
+            await _resumeRepository.SaveChangesAsync();
+            await transaction.CommitAsync();
+        }
+        catch (Exception ex)
+        {
+            await transaction.RollbackAsync();
+            throw new Exception(ex.Message);
         }
 
-        Resume? resume = await (await _resumeRepository.GetAllAsync())
-            .Where(resume => resume.UserId == user.id)
-            .FirstOrDefaultAsync();
-
-        if (resume is null)
-        {
-            AddError($"Resume not found");
-            return;
-        }
-
-        resume.IsHided = true;
-        await _resumeRepository.SaveChangesAsync();
     }
 
 }

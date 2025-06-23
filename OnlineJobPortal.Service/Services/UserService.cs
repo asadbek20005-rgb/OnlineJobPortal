@@ -15,7 +15,7 @@ using StatusGeneric;
 namespace OnlineJobPortal.Service.Services;
 
 public class UserService(
-    IBaseRepository<User> userRepository, 
+    IBaseRepository<User> userRepository,
     IBaseRepository<City> cityRepository,
     IBaseRepository<Role> roleRepository,
     IRedisService redisService,
@@ -47,23 +47,38 @@ public class UserService(
             return null;
         }
 
-        if (await UserIsExistInDb(model.PhoneNumber) || await UserIsExistInCache(model.PhoneNumber))
+        using var transaction = await _userRepository.BeginTransactionAsync();
+
+        try
         {
-            AddError($"User already exist");
-            return null;
+
+            if (await UserIsExistInDb(model.PhoneNumber) || await UserIsExistInCache(model.PhoneNumber))
+            {
+                AddError($"User already exist");
+                return null;
+            }
+
+
+            var newUser = _mapper.Map<User>(model);
+            newUser.PasswordHash = HashPassword(newUser, model.Password);
+            newUser.RoleId = await GetRoleIdAsync(model.RoleId);
+
+            await _redisService.SetItemAsync(StaticData.UserRedisKey, newUser);
+            int code = await _otpService.GenerateCodeToPhoneNumberAsync(model.PhoneNumber);
+
+            await _otpService.SendSMSAsync(model.PhoneNumber, $"Varification code: {code}");
+
+            await transaction.CommitAsync();
+            return code;
+
+        }
+        catch (Exception ex)
+        {
+            await transaction.RollbackAsync();
+            throw new Exception(ex.Message);
         }
 
 
-        var newUser = _mapper.Map<User>(model);
-        newUser.PasswordHash = HashPassword(newUser, model.Password);
-        newUser.RoleId = await GetRoleIdAsync(model.RoleId);
-
-        await _redisService.SetItemAsync(StaticData.UserRedisKey, newUser);
-        int code = await _otpService.GenerateCodeToPhoneNumberAsync(model.PhoneNumber);
-
-        await _otpService.SendSMSAsync(model.PhoneNumber, $"Varification code: {code}");
-
-        return code;
     }
     public async Task VerifyRegisterAsync(OtpModel model)
     {
@@ -218,8 +233,8 @@ public class UserService(
     #region privateMethods
     public async Task<bool> UserIsExistInDb(string phoneNumber)
     {
-        bool isUserExist = await (await _userRepository.GetAllAsync())
-            .AnyAsync(user => user.PhoneNumber == phoneNumber);
+        bool isUserExist = (await _userRepository.GetAllAsync())
+            .Any(user => user.PhoneNumber == phoneNumber);
 
 
         return isUserExist;
@@ -235,7 +250,7 @@ public class UserService(
         return false;
     }
 
-    private async Task<bool> UserIsExistInCache(string phoneNumber)
+    public async Task<bool> UserIsExistInCache(string phoneNumber)
     {
         User? user = await _redisService.GetItemAsync<User>(StaticData.UserRedisKey);
         if (user is not null && user.PhoneNumber == phoneNumber)
@@ -252,8 +267,8 @@ public class UserService(
 
     private async Task<int> GetRoleIdAsync(int id)
     {
-        int roleId = await (await _roleRepository.GetAllAsync())
-            .Where(x => x.Id == id).Select(x => x.Id).FirstOrDefaultAsync();
+        int roleId = (await _roleRepository.GetAllAsync())
+            .Where(x => x.Id == id).Select(x => x.Id).FirstOrDefault();
         return roleId;
     }
 

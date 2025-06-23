@@ -96,6 +96,10 @@ public class MapperProfile : Profile
            .ForMember(dest => dest.Responsibilities, opts => opts.Condition(src => src.Responsibilities != null));
 
 
+        CreateMap<UpdateVacancyModel, Vacancy>()
+            .ForMember(dest => dest.ProfessionId, opts => opts.Condition(src => src.ProfessionId != null));
+
+
 
 
     }

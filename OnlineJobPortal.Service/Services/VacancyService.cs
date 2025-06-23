@@ -3,7 +3,6 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using OnlineJobPortal.Common.Dtos;
 using OnlineJobPortal.Common.Models.Vacancy;
-using OnlineJobPortal.Common.Statics;
 using OnlineJobPortal.Data.Contracts;
 using OnlineJobPortal.Data.Entities;
 using OnlineJobPortal.Service.Contracts;
@@ -25,6 +24,7 @@ public class VacancyService(
     private readonly IMapper _mapper = mapper;
     private readonly IBaseRepository<Company> _companyRepository = companyRepository;
     private readonly IBaseRepository<User> _userRepository = userRepository;
+
     public async Task CreateAsync(Guid employerId, CreateVacancyModel model)
     {
         var validationResult = await _validator.ValidateAsync(model);
@@ -70,55 +70,103 @@ public class VacancyService(
             }
         }
     }
-
-
     public async Task<List<VacancyDto>> GetAll()
     {
         List<Vacancy> vacancies = await (await _vacancyRepository.GetAllAsync()).ToListAsync();
 
         return _mapper.Map<List<VacancyDto>>(vacancies);
     }
-
     public async Task<List<VacancyDto>?> GetAllVacanciesBy(VacancyFilterModel model)
     {
-        var vacancies = await _vacancyRepository.GetAllAsync();
-        var validationResult = await _validator2.ValidateAsync(model);
-        var dtos = new List<VacancyDto>();
-        if (!validationResult.IsValid)
+        using var transcation = await _vacancyRepository.BeginTransactionAsync();
+        try
         {
-            foreach (var error in validationResult.Errors)
+            var vacancies = await _vacancyRepository.GetAllAsync();
+            var validationResult = await _validator2.ValidateAsync(model);
+            var dtos = new List<VacancyDto>();
+            if (!validationResult.IsValid)
             {
-                AddError($"Error: {error}");
-            }
-            return null;
-        }
-
-
-        if (model.ProfessionId.HasValue)
-        {
-            dtos = _mapper.Map<List<VacancyDto>>(vacancies.Where(x => x.ProfessionId == model.ProfessionId));
-        }
-
-        if (model.CityId.HasValue)
-        {
-            bool companyExist = await (await _companyRepository.GetAllAsync()).AnyAsync(x => x.CityId == model.CityId);
-            if (companyExist)
-            {
-                dtos = _mapper.Map<List<VacancyDto>>(vacancies.Where(x => x.Company!.CityId == model.CityId));
-
+                foreach (var error in validationResult.Errors)
+                {
+                    AddError($"Error: {error}");
+                }
+                return null;
             }
 
+
+            if (model.ProfessionId.HasValue)
+            {
+                dtos = _mapper.Map<List<VacancyDto>>(vacancies.Where(x => x.ProfessionId == model.ProfessionId));
+            }
+
+            if (model.CityId.HasValue)
+            {
+                bool companyExist = await (await _companyRepository.GetAllAsync()).AnyAsync(x => x.CityId == model.CityId);
+                if (companyExist)
+                {
+                    dtos = _mapper.Map<List<VacancyDto>>(vacancies.Where(x => x.Company!.CityId == model.CityId));
+
+                }
+
+            }
+
+
+            if (!string.IsNullOrWhiteSpace(model.Name))
+            {
+                bool companyExist = await (await _companyRepository.GetAllAsync()).AnyAsync(x => x.CityId == model.CityId);
+                if (companyExist)
+                    dtos = _mapper.Map<List<VacancyDto>>(vacancies.Where(x => x.Company!.Name == model.Name));
+            }
+
+            await transcation.CommitAsync();
+            return dtos;
+
         }
-
-
-        if (!string.IsNullOrWhiteSpace(model.Name))
+        catch (Exception ex)
         {
-            bool companyExist = await (await _companyRepository.GetAllAsync()).AnyAsync(x => x.CityId == model.CityId);
-            if (companyExist)
-                dtos = _mapper.Map<List<VacancyDto>>(vacancies.Where(x => x.Company!.Name == model.Name));
+            await transcation.RollbackAsync();
+            throw new Exception(ex.Message);
         }
 
+    }
+    public async Task AddToFavourites(int vacancyId)
+    {
+        Vacancy? vacancy = await _vacancyRepository.GetByIdAsync(vacancyId);
+        if (vacancy is null)
+        {
+            AddError("Vacancy Not Found");
+            return;
+        }
 
-        return dtos;
+        vacancy.IsFavourite = true;
+
+        await _vacancyRepository.UpdateAsync(vacancy);
+        await _vacancyRepository.SaveChangesAsync();
+    }
+
+
+
+
+
+    public async Task DeleteAsync(int vacancyId)
+    {
+        Vacancy? vacancy = await _vacancyRepository.GetByIdAsync(vacancyId);
+        if (vacancy is null)
+        {
+            AddError("Vacancy Not Found");
+            return;
+        }
+        await _vacancyRepository.DeleteAsync(vacancy);
+        await _vacancyRepository.SaveChangesAsync();
+    }
+
+    public Task Reply()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task UpdateAsync(int vacancyId, UpdateVacancyModel model)
+    {
+        throw new NotImplementedException();
     }
 }
