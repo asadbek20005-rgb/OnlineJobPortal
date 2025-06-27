@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using OnlineJobPortal.Data.Bases;
 using OnlineJobPortal.Data.Entities;
+using OnlineJobPortal.Data.EntityConfigs;
 
 namespace OnlineJobPortal.Data.Contexts;
 
@@ -59,12 +60,8 @@ public class OnlineJobPortalDbContext : DbContext
         modelBuilder.Entity<Vacancy>()
            .Property(x => x.WorkingHourId)
            .HasDefaultValue(1);
-
-
-
-
-
-
+        
+        modelBuilder.ApplyConfiguration(new UserConfiguration());
     }
 
 

@@ -41,7 +41,7 @@ public class VacancyService(
         }
 
         bool employerExist = await (await _userRepository.GetAllAsync())
-            .AnyAsync(x => x.id == employerId);
+            .AnyAsync(x => x.id == employerId && x.RoleId == 2);
 
         if (employerExist is false)
         {
@@ -55,12 +55,8 @@ public class VacancyService(
             try
             {
 
-                Company company = _mapper.Map<Company>(model.CreateCompanyModel);
-                await _companyRepository.AddAsync(company);
-                await _companyRepository.SaveChangesAsync();
-
                 Vacancy vacancy = _mapper.Map<Vacancy>(model);
-                vacancy.CompanyId = company.Id;
+                vacancy.CompanyId = model.CompanyId;
 
 
                 await _vacancyRepository.AddAsync(vacancy);

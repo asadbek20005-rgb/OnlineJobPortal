@@ -16,7 +16,7 @@ public class MapperProfile : Profile
 {
     public MapperProfile()
     {
-        CreateMap<RegisterModel, User>();       
+        CreateMap<RegisterModel, User>();
         CreateMap<CreateUserBasicDetailModel, User>();
         CreateMap<CreateWorkExperianceModel, WorkExperience>();
         CreateMap<CreateContactModel, Contact>();
@@ -28,8 +28,8 @@ public class MapperProfile : Profile
         CreateMap<Language, LanguageDto>();
         CreateMap<CreateCompanyModel, Company>();
         CreateMap<CreateVacancyModel, Vacancy>();
-        CreateMap<Vacancy,VacancyDto>();
-
+        CreateMap<Vacancy, VacancyDto>();
+        CreateMap<Company, CompanyDto>();
 
 
         CreateMap<UpdateResumeModel, Resume>()
@@ -101,6 +101,11 @@ public class MapperProfile : Profile
             .ForMember(dest => dest.Responsibilities, opts => opts.Condition(src => src.Responsibilities != null))
             .ForMember(dest => dest.Details, opts => opts.Condition(src => src.Details != null));
 
-   
+
+        CreateMap<UpdateCompanyModel, Company>()
+                        .ForMember(dest => dest.CityId, opts => opts.Condition(src => src.CityId != null))
+                        .ForMember(dest => dest.Name, opts => opts.Condition(src => src.Name != null))
+                        .ForMember(dest => dest.About, opts => opts.Condition(src => src.About != null));
+
     }
 }

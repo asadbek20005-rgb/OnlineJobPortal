@@ -23,7 +23,8 @@ public class UserService(
     IValidator<UpdateUserBasicDetailModel> validator,
     IValidator<RegisterModel> registerValidator,
     IValidator<OtpModel> otpValidator,
-    IMapper mapper) : StatusGenericHandler, IUserService
+    IMapper mapper,
+    IValidator<LoginModel> _loginValidator) : StatusGenericHandler, IUserService
 {
     private readonly IBaseRepository<User> _userRepository = userRepository;
     private readonly IBaseRepository<City> _cityRepository = cityRepository;
@@ -34,7 +35,7 @@ public class UserService(
     private readonly IValidator<RegisterModel> _registerValidator = registerValidator;
     private readonly IValidator<OtpModel> _otpValidator = otpValidator;
     private readonly IBaseRepository<Role> _roleRepository = roleRepository;
-
+    private readonly IValidator<LoginModel> _loginValidator = _loginValidator;
     public async Task<int?> RegisterAsync(RegisterModel model)
     {
         var validationResult = await _registerValidator.ValidateAsync(model);
@@ -103,7 +104,6 @@ public class UserService(
             return;
         }
 
-        user.RoleId = 1;
         user.StatusId = 1;
         user.LanguageId = 1;
         user.LevelId = 15;
@@ -113,12 +113,23 @@ public class UserService(
     }
     public async Task<int?> LoginAysnc(LoginModel model)
     {
+        var validationResult = await _loginValidator.ValidateAsync(model);
+
+        if (!validationResult.IsValid)
+        {
+            foreach (var error in validationResult.Errors)
+            {
+                AddError($"Error: {error.ErrorMessage}");
+            }
+            return null;
+        }
+
         User? user = await (await _userRepository.GetAllAsync())
-            .Where(u => u.PhoneNumber == model.PhoneNumber)
+            .Where(u => u.PhoneNumber == model.PhoneNumber && u.RoleId == model.RoleId)
             .FirstOrDefaultAsync();
         if (user is null)
         {
-            AddError("Invalid phone number");
+            AddError("User Not Found");
             return null;
         }
 

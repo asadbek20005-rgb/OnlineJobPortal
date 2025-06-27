@@ -6,11 +6,10 @@ namespace OnlineJobPortal.Common.Models.Vacancy;
 public class CreateVacancyModel
 {
     [Required]
-    public int ProfessionId { get; set; }
+    public int CompanyId { get; set; }
 
     [Required]
-    public CreateCompanyModel CreateCompanyModel { get; set; } = null!;
-
+    public int ProfessionId { get; set; }
 
     [DataType(DataType.MultilineText)]
     [Required]

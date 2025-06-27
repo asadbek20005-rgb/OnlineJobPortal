@@ -36,8 +36,6 @@ public class ExceptionHandlerMiddleware(RequestDelegate requestDelegate,
 
             await httpContext.Response.WriteAsync("Error occured");
         }
-
-
     }
 
 

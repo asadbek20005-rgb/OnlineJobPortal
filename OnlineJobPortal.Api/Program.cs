@@ -33,6 +33,7 @@ builder.Services.AddScoped<IOtpService, OtpService>();
 builder.Services.AddScoped<IResumeService, ResumeService>();
 builder.Services.AddScoped<IContentService, ContentService>();
 builder.Services.AddScoped<IVacancyService, VacancyService>();
+builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddSingleton<IMinioService, MinioService>();
 builder.Services.AddScoped<IJsonParserService, JsonParserService>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateResumeValidator>();
