@@ -20,6 +20,6 @@ public class RedisService(IConnectionMultiplexer connectionMultiplexer) : IRedis
     public async Task SetItemAsync<T>(string key, T item)
     {
         string json = JsonConvert.SerializeObject(item);
-        await _database.StringSetAsync(key, json);
+        await _database.StringSetAsync(key, json, TimeSpan.FromMinutes(2));
     }
 }

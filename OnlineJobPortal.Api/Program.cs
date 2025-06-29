@@ -34,6 +34,7 @@ builder.Services.AddScoped<IResumeService, ResumeService>();
 builder.Services.AddScoped<IContentService, ContentService>();
 builder.Services.AddScoped<IVacancyService, VacancyService>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
+builder.Services.AddScoped<IEskizService, EskizService>();
 builder.Services.AddSingleton<IMinioService, MinioService>();
 builder.Services.AddScoped<IJsonParserService, JsonParserService>();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateResumeValidator>();
@@ -101,6 +102,8 @@ builder.Services.AddCors(options =>
     });
 });
 
+
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 

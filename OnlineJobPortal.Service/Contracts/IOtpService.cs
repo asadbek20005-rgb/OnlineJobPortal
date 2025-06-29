@@ -6,5 +6,5 @@ public interface IOtpService
 {
     Task<int> GenerateCodeToPhoneNumberAsync(string phoneNumber);
     Task VerifyAsync(OtpModel model);
-    Task SendSMSAsync(string toPhoneNumber, string message);
+    Task<string> SendSMSAsync(string toPhoneNumber);
 }

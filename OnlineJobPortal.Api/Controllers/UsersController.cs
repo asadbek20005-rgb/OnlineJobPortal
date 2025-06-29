@@ -17,10 +17,10 @@ public class UsersController(IUserService userService) : ControllerBase
     [HttpPost("account/register")]
     public async Task<IActionResult> Register(RegisterModel model)
     {
-        int? code = await _userService.RegisterAsync(model);
+        string? result = await _userService.RegisterAsync(model);
         if (_userService.IsValid)
         {
-            return Ok(code);
+            return Ok(result);
         }
 
         _userService.CopyToModelState(ModelState);

@@ -36,7 +36,7 @@ public class UserService(
     private readonly IValidator<OtpModel> _otpValidator = otpValidator;
     private readonly IBaseRepository<Role> _roleRepository = roleRepository;
     private readonly IValidator<LoginModel> _loginValidator = _loginValidator;
-    public async Task<int?> RegisterAsync(RegisterModel model)
+    public async Task<string?> RegisterAsync(RegisterModel model)
     {
         var validationResult = await _registerValidator.ValidateAsync(model);
         if (!validationResult.IsValid)
@@ -65,12 +65,11 @@ public class UserService(
             newUser.RoleId = await GetRoleIdAsync(model.RoleId);
 
             await _redisService.SetItemAsync(StaticData.UserRedisKey, newUser);
-            int code = await _otpService.GenerateCodeToPhoneNumberAsync(model.PhoneNumber);
 
-            await _otpService.SendSMSAsync(model.PhoneNumber, $"Varification code: {code}");
+            string result = await _otpService.SendSMSAsync(model.PhoneNumber);
 
             await transaction.CommitAsync();
-            return code;
+            return result;
 
         }
         catch (Exception ex)

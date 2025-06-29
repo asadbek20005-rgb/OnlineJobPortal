@@ -9,7 +9,7 @@ namespace OnlineJobPortal.Service.Contracts;
 public interface IUserService : IStatusGeneric
 {
     // Register Employer
-    Task<int?> RegisterAsync(RegisterModel model);
+    Task<string?> RegisterAsync(RegisterModel model);
     Task VerifyRegisterAsync(OtpModel model);
     Task<int?> LoginAysnc(LoginModel model);
     Task<string> VerifyLoginAsync(OtpModel model);
